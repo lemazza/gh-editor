@@ -1,25 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import PrivateRoute from './components/private-route';
 import {LoginPage} from './components/login-page';
 import HomePage from './components/home-page';
-import {getCookie} from './utils/cookie-fns';
 
+import 'bootswatch/dist/sandstone/bootstrap.min.css';
 import './App.css';
 
-
-const initialBool = getCookie("authToken") ? true : false
-
 function App() {
-  const [ loggedIn, setLoggedIn ] = useState(initialBool);
-  
-  useEffect(() => {
-    const token = getCookie('authToken')
-    console.log('loggedIn: ', loggedIn)
-    console.log('token', token);
-    token ? setLoggedIn(true) : setLoggedIn(false);
-  }, [loggedIn]);
+  const [ loggedIn, setLoggedIn ] = useState(false);
 
   return (
     <div className="App">
@@ -28,8 +18,8 @@ function App() {
           <Route path="/login">
             <LoginPage loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
           </Route>
-          <PrivateRoute loggedIn={loggedIn} path="/">
-            <HomePage />
+          <PrivateRoute loggedIn={loggedIn} setLoggedIn={setLoggedIn} path="/">
+            <HomePage setLoggedIn={setLoggedIn} />
           </PrivateRoute>
         </Switch>
       </Router>

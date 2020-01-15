@@ -5,6 +5,8 @@ import * as yup from 'yup';
 
 import { API_URL } from '../config';
 import {setCookie} from '../utils/cookie-fns';
+import { postData } from '../utils/crud';
+
 // form validation schema
 const schema = yup.object().shape({
   email: yup
@@ -19,16 +21,6 @@ const schema = yup.object().shape({
     .trim(),
 });
 
-async function postData(url = '', data = {}) {
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
-  });
-  return await response.json()
-}
 
 export function LoginPage(props) {
   //returns user to page they were trying to view after logging in
@@ -44,7 +36,8 @@ export function LoginPage(props) {
       if (!authResponse.authToken) {
         throw new Error("response does not contain authToken");
       } 
-      setCookie("authToken", authResponse.authToken, 7);  
+      setCookie("authToken", authResponse.authToken, 7);
+      setCookie("username", authResponse.username, 7);
       props.setLoggedIn(true);
       history.replace(from);
     } catch (error) {
