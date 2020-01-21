@@ -1,14 +1,16 @@
 import React from 'react';
-import HeaderView from './views/header-view.jsx';
+import NavigationContainer from './views/navigation-container.jsx';
 
 export default function HomePage(props) {
  
   return (
     <div>
-      <HeaderView setLoggedIn={props.setLoggedIn} />
-    
-      This is the Home Page
-      needs link to user page, shelves, games, game search
+      <NavigationContainer setLoggedIn={props.setLoggedIn}>
+        <h3>
+          Home page text
+        </h3>
+        <p>home page other text</p>
+      </NavigationContainer>
     </div>
   )
 }

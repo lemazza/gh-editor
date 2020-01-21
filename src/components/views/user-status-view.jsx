@@ -15,11 +15,11 @@ export default function UserStatusView(props) {
 	}
 	
   return (
-		<div>
-			<span>
+		<div className="navbar-text" >
+			<span className="mr-2">
 				{username}
 			</span>
-			<button onClick={logOut}>log out</button>
+			<button type="button" class="btn btn-primary btn-sm" onClick={logOut}>log out</button>
 		</div>
   )
 }

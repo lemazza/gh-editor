@@ -1,0 +1,7 @@
+#sidebar-container .list-group-item+.list-group-item {
+    border-top-width: medium; 
+}
+
+#sidebar-container .list-group-item {
+    border: 1px solid rgba(0,0,0,.125)
+}
