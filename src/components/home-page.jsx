@@ -1,16 +1,14 @@
 import React from 'react';
-import NavigationContainer from './views/navigation-container.jsx';
 
 export default function HomePage(props) {
  
   return (
     <div>
-      <NavigationContainer setLoggedIn={props.setLoggedIn}>
         <h3>
           Home page text
         </h3>
-        <p>home page other text</p>
-      </NavigationContainer>
+        <p>alert descrepencies in collection (extra games, duplicates in bgg), also games without maps, 
+        report recent qc activity, perhaps click log chart, change in office game recs</p>
     </div>
   )
 }

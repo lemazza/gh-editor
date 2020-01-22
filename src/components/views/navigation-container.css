@@ -1,5 +1,5 @@
 #sidebar-container .list-group-item+.list-group-item {
-    border-top-width: medium; 
+    border-top-width: thin; 
 }
 
 #sidebar-container .list-group-item {
