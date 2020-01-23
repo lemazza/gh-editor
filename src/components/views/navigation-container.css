@@ -5,3 +5,7 @@
 #sidebar-container .list-group-item {
     border: 1px solid rgba(0,0,0,.125)
 }
+
+.list-separator {
+    height: 20px;
+}

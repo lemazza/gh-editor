@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import PrivateRoute from './components/private-route';
 import NavigationContainer from './components/views/navigation-container';
-import {LoginPage} from './components/login-page';
+import { LoginPage } from './components/login-page';
 import HomePage from './components/home-page';
 import EditGamesPage from './components/pages/edit-games-page';
 import QualityControlPage from './components/pages/quality-control-page';
@@ -17,28 +17,39 @@ import IndividualGamePage from './components/pages/individual-game-page';
 import IndividualUserPage from './components/pages/individual-user-page';
 
 import { getCookie } from './utils/cookie-fns';
+import { getData } from './utils/crud';
+import { API_URL } from './config';
 
 import 'bootswatch/dist/sandstone/bootstrap.min.css';
 import './App.css';
 
 function App() {
-  const authCookie = getCookie("authToken");
-  let initLoggedInStatus = authCookie ? true : false;
+  const authCookie = getCookie('authToken');
+  const initLoggedInStatus = authCookie ? true : false;
 
-  const [ loggedIn, setLoggedIn ] = useState(initLoggedInStatus);
+  const [loggedIn, setLoggedIn] = useState(initLoggedInStatus);
+  const [allGames, setAllGames] = useState([]);
+
+  useEffect(() => {
+    if (loggedIn) {
+      // could be a problem using authCookie like this, might have to make state for token
+      getData(`${API_URL}/games`, authCookie).then(gamesArray => {
+        setAllGames(gamesArray);
+      });
+    }
+  }, []);
 
   return (
     <div className="App">
       <Router>
         <Switch>
-
           <Route path="/login">
             <LoginPage loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
           </Route>
 
           <PrivateRoute loggedIn={loggedIn} setLoggedIn={setLoggedIn} exact path="/">
             <NavigationContainer setLoggedIn={setLoggedIn}>
-              <HomePage />
+              <HomePage allGames={allGames} setAllGames={setAllGames} />
             </NavigationContainer>
           </PrivateRoute>
 
@@ -72,38 +83,35 @@ function App() {
             </NavigationContainer>
           </PrivateRoute>
 
-           <PrivateRoute loggedIn={loggedIn} setLoggedIn={setLoggedIn} path="/shelves">
+          <PrivateRoute loggedIn={loggedIn} setLoggedIn={setLoggedIn} path="/shelves">
             <NavigationContainer setLoggedIn={setLoggedIn}>
               <ShelvesPage />
             </NavigationContainer>
           </PrivateRoute>
 
-           <PrivateRoute loggedIn={loggedIn} setLoggedIn={setLoggedIn} path="/office">
+          <PrivateRoute loggedIn={loggedIn} setLoggedIn={setLoggedIn} path="/office">
             <NavigationContainer setLoggedIn={setLoggedIn}>
               <OfficePage />
             </NavigationContainer>
           </PrivateRoute>
 
-          
-           <PrivateRoute loggedIn={loggedIn} setLoggedIn={setLoggedIn} exact path="/users">
+          <PrivateRoute loggedIn={loggedIn} setLoggedIn={setLoggedIn} exact path="/users">
             <NavigationContainer setLoggedIn={setLoggedIn}>
               <EditUsersPage />
             </NavigationContainer>
           </PrivateRoute>
 
-          
-           <PrivateRoute loggedIn={loggedIn} setLoggedIn={setLoggedIn} path="/users/:id">
+          <PrivateRoute loggedIn={loggedIn} setLoggedIn={setLoggedIn} path="/users/:id">
             <NavigationContainer setLoggedIn={setLoggedIn}>
               <IndividualUserPage />
             </NavigationContainer>
           </PrivateRoute>
-          
-           <PrivateRoute loggedIn={loggedIn} setLoggedIn={setLoggedIn} path="/staff-picks">
+
+          <PrivateRoute loggedIn={loggedIn} setLoggedIn={setLoggedIn} path="/staff-picks">
             <NavigationContainer setLoggedIn={setLoggedIn}>
               <StaffPicksPage />
             </NavigationContainer>
           </PrivateRoute>
-
         </Switch>
       </Router>
     </div>
